@@ -586,61 +586,61 @@ printf("\nBEGIN_OUTPUT: numvars = %zd \n", numvars);*/
     el3 = uptime() - el3;
     //sim_log("TimeHDF5Close: " << el3 << " s");
 
-    if (mpi_rank == 0)
-    {
-        char const *output_xml_file = "./field_hdf5/hdf5_field.xdmf";
-        char dimensions_3d[128];
-        sprintf(dimensions_3d, "%lld %lld %lld", field_global_size[0], field_global_size[1], field_global_size[2]);
-        char dimensions_4d[128];
-        sprintf(dimensions_4d, "%lld %lld %lld %d", field_global_size[0], field_global_size[1], field_global_size[2], 3);
-        char orignal[128];
-        sprintf(orignal, "%f %f %f", grid->x0, grid->y0, grid->z0);
-        char dxdydz[128];
-        sprintf(dxdydz, "%f %f %f", grid->dx, grid->dy, grid->dz);
+    /* if (mpi_rank == 0) */
+    /* { */
+    /*     char const *output_xml_file = "./field_hdf5/hdf5_field.xdmf"; */
+    /*     char dimensions_3d[128]; */
+    /*     sprintf(dimensions_3d, "%lld %lld %lld", field_global_size[0], field_global_size[1], field_global_size[2]); */
+    /*     char dimensions_4d[128]; */
+    /*     sprintf(dimensions_4d, "%lld %lld %lld %d", field_global_size[0], field_global_size[1], field_global_size[2], 3); */
+    /*     char orignal[128]; */
+    /*     sprintf(orignal, "%f %f %f", grid->x0, grid->y0, grid->z0); */
+    /*     char dxdydz[128]; */
+    /*     sprintf(dxdydz, "%f %f %f", grid->dx, grid->dy, grid->dz); */
 
-        int nframes = num_step / field_interval + 1;
-        static int field_tframe = 0;
+    /*     int nframes = num_step / field_interval + 1; */
+    /*     static int field_tframe = 0; */
 
-#ifdef DUMP_INFO_DEBUG
-        printf("         meta file : %s \n", output_xml_file);
-        printf(" array dims per var: %s \n", dimensions_3d);
-        printf("array dims all vars: %s \n", dimensions_4d);
-        printf("            orignal: %s \n", orignal);
-        printf("             dxdydz: %s \n", dxdydz);
-        printf("            nframes: %d \n", nframes);
-        printf("    field_interval: %d \n", field_interval);
-        printf("       current step: %lld \n", step());
-        //printf("    Simulation time: %f \n", grid->t0);
-        printf("             tframe: %d \n", field_tframe);
-#endif
+/* #ifdef DUMP_INFO_DEBUG */
+    /*     printf("         meta file : %s \n", output_xml_file); */
+    /*     printf(" array dims per var: %s \n", dimensions_3d); */
+    /*     printf("array dims all vars: %s \n", dimensions_4d); */
+    /*     printf("            orignal: %s \n", orignal); */
+    /*     printf("             dxdydz: %s \n", dxdydz); */
+    /*     printf("            nframes: %d \n", nframes); */
+    /*     printf("    field_interval: %d \n", field_interval); */
+    /*     printf("       current step: %lld \n", step()); */
+    /*     //printf("    Simulation time: %f \n", grid->t0); */
+    /*     printf("             tframe: %d \n", field_tframe); */
+/* #endif */
 
-        // TODO: this footer dumping is more likely better done in a
-        // destructor, rather than hoping a multiple division works out
-        if (field_tframe >= 1)
-        {
-            if (field_tframe == (nframes - 1))
-            {
-                invert_field_xml_item(output_xml_file, "fields", step(), dimensions_4d, dimensions_3d, 1);
-            }
-            else
-            {
-                invert_field_xml_item(output_xml_file, "fields", step(), dimensions_4d, dimensions_3d, 0);
-            }
-        }
-        else
-        {
-            create_file_with_header(output_xml_file, dimensions_3d, orignal, dxdydz, nframes, field_interval);
-            if (field_tframe == (nframes - 1))
-            {
-                invert_field_xml_item(output_xml_file, "fields", step(), dimensions_4d, dimensions_3d, 1);
-            }
-            else
-            {
-                invert_field_xml_item(output_xml_file, "fields", step(), dimensions_4d, dimensions_3d, 0);
-            }
-        }
-        field_tframe++;
-    }
+    /*     // TODO: this footer dumping is more likely better done in a */
+    /*     // destructor, rather than hoping a multiple division works out */
+    /*     if (field_tframe >= 1) */
+    /*     { */
+    /*         if (field_tframe == (nframes - 1)) */
+    /*         { */
+    /*             invert_field_xml_item(output_xml_file, "fields", step(), dimensions_4d, dimensions_3d, 1); */
+    /*         } */
+    /*         else */
+    /*         { */
+    /*             invert_field_xml_item(output_xml_file, "fields", step(), dimensions_4d, dimensions_3d, 0); */
+    /*         } */
+    /*     } */
+    /*     else */
+    /*     { */
+    /*         create_file_with_header(output_xml_file, dimensions_3d, orignal, dxdydz, nframes, field_interval); */
+    /*         if (field_tframe == (nframes - 1)) */
+    /*         { */
+    /*             invert_field_xml_item(output_xml_file, "fields", step(), dimensions_4d, dimensions_3d, 1); */
+    /*         } */
+    /*         else */
+    /*         { */
+    /*             invert_field_xml_item(output_xml_file, "fields", step(), dimensions_4d, dimensions_3d, 0); */
+    /*         } */
+    /*     } */
+    /*     field_tframe++; */
+    /* } */
 }
 
 // TODO: fix this, it currently uses a static global and the logic only
@@ -828,63 +828,63 @@ void vpic_simulation::dump_hydro_hdf5( const char *speciesname,
     el3 = uptime() - el3;
     //sim_log("TimeHDF5Close: " << el3 << " s");
 
-    if (mpi_rank == 0)
-    {
-        char output_xml_file[128];
-        sprintf(output_xml_file, "./%s/%s%s%s", "hydro_hdf5", "hydro-", speciesname, ".xdmf");
-        char dimensions_3d[128];
-        sprintf(dimensions_3d, "%lld %lld %lld", hydro_global_size[0], hydro_global_size[1], hydro_global_size[2]);
-        char dimensions_4d[128];
-        sprintf(dimensions_4d, "%lld %lld %lld %d", hydro_global_size[0], hydro_global_size[1], hydro_global_size[2], 3);
-        char orignal[128];
-        sprintf(orignal, "%f %f %f", grid->x0, grid->y0, grid->z0);
-        char dxdydz[128];
-        sprintf(dxdydz, "%f %f %f", grid->dx, grid->dy, grid->dz);
+    /* if (mpi_rank == 0) */
+    /* { */
+    /*     char output_xml_file[128]; */
+    /*     sprintf(output_xml_file, "./%s/%s%s%s", "hydro_hdf5", "hydro-", speciesname, ".xdmf"); */
+    /*     char dimensions_3d[128]; */
+    /*     sprintf(dimensions_3d, "%lld %lld %lld", hydro_global_size[0], hydro_global_size[1], hydro_global_size[2]); */
+    /*     char dimensions_4d[128]; */
+    /*     sprintf(dimensions_4d, "%lld %lld %lld %d", hydro_global_size[0], hydro_global_size[1], hydro_global_size[2], 3); */
+    /*     char orignal[128]; */
+    /*     sprintf(orignal, "%f %f %f", grid->x0, grid->y0, grid->z0); */
+    /*     char dxdydz[128]; */
+    /*     sprintf(dxdydz, "%f %f %f", grid->dx, grid->dy, grid->dz); */
 
-        int nframes = num_step / hydro_interval + 1;
+    /*     int nframes = num_step / hydro_interval + 1; */
 
-        const int tframe = tframe_map[sp->id];
+    /*     const int tframe = tframe_map[sp->id]; */
 
-#ifdef DUMP_INFO_DEBUG
-        printf("         meta file : %s \n", output_xml_file);
-        printf(" array dims per var: %s \n", dimensions_3d);
-        printf("array dims all vars: %s \n", dimensions_4d);
-        printf("            orignal: %s \n", orignal);
-        printf("             dxdydz: %s \n", dxdydz);
-        printf("            nframes: %d \n", nframes);
-        printf("    hydro_fields_interval: %d \n", hydro_interval);
-        printf("       current step: %lld \n", step());
-        printf("    Simulation time: %f \n", grid->t0);
-        printf("             tframe: %d \n", tframe);
-#endif
+/* #ifdef DUMP_INFO_DEBUG */
+    /*     printf("         meta file : %s \n", output_xml_file); */
+    /*     printf(" array dims per var: %s \n", dimensions_3d); */
+    /*     printf("array dims all vars: %s \n", dimensions_4d); */
+    /*     printf("            orignal: %s \n", orignal); */
+    /*     printf("             dxdydz: %s \n", dxdydz); */
+    /*     printf("            nframes: %d \n", nframes); */
+    /*     printf("    hydro_fields_interval: %d \n", hydro_interval); */
+    /*     printf("       current step: %lld \n", step()); */
+    /*     printf("    Simulation time: %f \n", grid->t0); */
+    /*     printf("             tframe: %d \n", tframe); */
+/* #endif */
 
-        char speciesname_new[128];
-        sprintf(speciesname_new, "hydro_%s", speciesname);
-        if (tframe >= 1)
-        {
-            if (tframe == (nframes - 1))
-            {
-                invert_hydro_xml_item(output_xml_file, speciesname_new, step(), dimensions_4d, dimensions_3d, 1);
-            }
-            else
-            {
-                invert_hydro_xml_item(output_xml_file, speciesname_new, step(), dimensions_4d, dimensions_3d, 0);
-            }
-        }
-        else
-        {
-            create_file_with_header(output_xml_file, dimensions_3d, orignal, dxdydz, nframes, hydro_interval);
-            if (tframe == (nframes - 1))
-            {
-                invert_hydro_xml_item(output_xml_file, speciesname_new, step(), dimensions_4d, dimensions_3d, 1);
-            }
-            else
-            {
-                invert_hydro_xml_item(output_xml_file, speciesname_new, step(), dimensions_4d, dimensions_3d, 0);
-            }
-        }
-        tframe_map[sp->id]++;
-    }
+    /*     char speciesname_new[128]; */
+    /*     sprintf(speciesname_new, "hydro_%s", speciesname); */
+    /*     if (tframe >= 1) */
+    /*     { */
+    /*         if (tframe == (nframes - 1)) */
+    /*         { */
+    /*             invert_hydro_xml_item(output_xml_file, speciesname_new, step(), dimensions_4d, dimensions_3d, 1); */
+    /*         } */
+    /*         else */
+    /*         { */
+    /*             invert_hydro_xml_item(output_xml_file, speciesname_new, step(), dimensions_4d, dimensions_3d, 0); */
+    /*         } */
+    /*     } */
+    /*     else */
+    /*     { */
+    /*         create_file_with_header(output_xml_file, dimensions_3d, orignal, dxdydz, nframes, hydro_interval); */
+    /*         if (tframe == (nframes - 1)) */
+    /*         { */
+    /*             invert_hydro_xml_item(output_xml_file, speciesname_new, step(), dimensions_4d, dimensions_3d, 1); */
+    /*         } */
+    /*         else */
+    /*         { */
+    /*             invert_hydro_xml_item(output_xml_file, speciesname_new, step(), dimensions_4d, dimensions_3d, 0); */
+    /*         } */
+    /*     } */
+    /*     tframe_map[sp->id]++; */
+    /* } */
 }
 
 // TODO: make the sp_name and speciesname variable naming consistent
