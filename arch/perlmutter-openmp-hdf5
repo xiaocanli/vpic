@@ -284,8 +284,8 @@ SET_BUILD_TYPE="Release"
 # Comment out default below to use all processors on compilation machine.
 #------------------------------------------------------------------------------#
 
-#NJ=8
-NJ=1
+NJ=8
+#NJ=1
 
 #------------------------------------------------------------------------------#
 # Choose verbosity of "make" output.
@@ -950,7 +950,7 @@ cmake \
 # VERBOSE=1, it can be helpful to also use NJ=1.
 #------------------------------------------------------------------------------#
 
-# make -j $NJ VERBOSE=$SET_VERBOSE
+make -j $NJ VERBOSE=$SET_VERBOSE
 
 #------------------------------------------------------------------------------#
 # Done.
