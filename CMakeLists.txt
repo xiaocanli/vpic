@@ -302,7 +302,7 @@ if(USE_HDF5)
     string(REPLACE ";" " " string_libraries "${HDF5_C_LIBRARY}")
     set(VPIC_CXX_LIBRARIES "${VPIC_CXX_LIBRARIES} ${string_libraries}")
 
-    if ("${HDF5_C_LIBRARY}" STREQUAL "")
+    if (NOT "${HDF5_C_LIBRARY}" STREQUAL "")
         string(REPLACE ";" " " string_libraries "${HDF5_C_LIBRARIES}")
         set(VPIC_CXX_LIBRARIES "${VPIC_CXX_LIBRARIES} ${string_libraries}")
     endif()
